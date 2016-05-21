@@ -19,7 +19,7 @@
       (map? item)
         (doseq [[method-name params] item]
           (if (vector? params)
-            (f method-name params)
+	    (f method-name params)
             (log invalid-msg)))
       (string? item)
         (f item)

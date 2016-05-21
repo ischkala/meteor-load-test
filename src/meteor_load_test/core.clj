@@ -2,7 +2,9 @@
   (:require [clojure.data.json :as json]
             [clojure.string :as str])
   (:import [java.net URI]
-           [com.keysolutions.ddpclient DDPClient])
+           [com.keysolutions.ddpclient DDPClient]
+	   [com.keysolutions.ddpclient DDPListener]
+	   [com.keysolutions.ddpclient.meteor DDPMeteorListener])
   (:use [meteor-load-test util method_calls subscriptions initial_payload])
   )
 
@@ -26,7 +28,8 @@
         calls-raw (.getProperty propertyBag "grinder.calls")
         subscriptions (get-json-property propertyBag "grinder.subscriptions")
         download-payload? (.getProperty propertyBag "grinder.downloadPayload")
-        debug? (.getBoolean propertyBag "grinder.debug" false)]
+        debug? (.getBoolean propertyBag "grinder.debug" false)
+	ddpmeteorlistener (DDPMeteorListener.)]
 
     (fn []
 
@@ -45,6 +48,9 @@
         (log "grinder.calls: " calls-raw)
         (log "host: " (.getHost targetUrl) ", port: " (get-port targetUrl)))
 
+      ;(let [ddpmeteorlistener (DDPMeteorListener. )])
+      ;(let [ddpmeteorlistener ("smooth")])
+      (log "ddpmeteorlistener: " ddpmeteorlistener)
       (let [ddp (DDPClient. (.getHost targetUrl) 
                             (get-port targetUrl) 
                             (isSSL targetUrl))
@@ -58,7 +64,7 @@
         (when download-payload?
           (fetch-static-assets get-html target-url-str))
 
-        ;(if debug? (.addObserver ddp (SimpleDdpClientObserver.)))
+        ;(if debug? (.addObserver ddp (DDPListener.)))
         
         ;; connect ddp client
         (.connect ddp)
@@ -81,7 +87,7 @@
             (let [credentials (first (rand-nth users))]
               (when debug?
                 (log "logging in with user credentials " credentials)) 
-              (call-method ddp "login" [{"user" {"email" (key credentials)} "password" (val credentials)}]))
+              (call-method ddp ddpmeteorlistener "login" [{"user" {"email" (key credentials)} "password" (val credentials)}]))
           (not-empty resume-tokens)
             (let [tokens (clojure.string/split resume-tokens #",")
                   resume-token (rand-nth tokens)]
@@ -94,7 +100,7 @@
 
         ;; return function that will be executed for each test run
         (let [sleep #(sleep-fn call-delay-ms)]
-          (test-runner-factory sleep client-id get-run-id (partial call-method ddp) calls-raw))
+          (test-runner-factory sleep client-id get-run-id (partial call-method ddp ddpmeteorlistener) calls-raw))
         
       )  ; let ddp-client, id
     )  ; returned fn

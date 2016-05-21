@@ -10,13 +10,19 @@
 (defn call-method 
   "Calls a Meteor method. Converts args to an Object[] 
    before passing to DDP client"
-  ([ddp method-name]
+  ([ddp ddpmeteorlistener method-name]
     (log "calling: " method-name)
-    (.call ddp method-name (object-array [])))
-  ([ddp method-name v]
+    (.call ddp method-name (object-array []) ddpmeteorlistener)
+    (log "last message: " (. ddpmeteorlistener (getLastMessage) )))
+    ;)
+    ;(let [lm (.getLastMessage ddpmeteorlistener ())]
+    ;(log "lm: " lm))
+  ([ddp ddpmeteorlistener method-name v]
     (log "calling: " method-name " with args: " v)
-    (.call ddp method-name (object-array v))))
-
+    (.call ddp method-name (object-array v) ddpmeteorlistener)
+    (log "last message: " (. ddpmeteorlistener (getLastMessage) ))))
+    ;(let [lm (.getLastMessage ddpmeteorlistener ())]
+    ;(log "lm: " lm))
 (defn perform-calls 
   "Calls meteor methods using supplied fn. Valid elements 
    of seq s include: 

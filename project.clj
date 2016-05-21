@@ -17,6 +17,7 @@
                   [org.clojars.runa/conjure "2.1.3"]
                   [net.sf.grinder/grinder "3.11"]] }}
     :repositories {"sonatype" "https://oss.sonatype.org/content/repositories/releases/"}
+    :java-source-paths ["src/java"]
     )
 
 (comment (defproject meteor-load-test "0.5.1"
