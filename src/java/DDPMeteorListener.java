@@ -29,6 +29,7 @@ import java.util.Observable;
 public class DDPMeteorListener extends DDPListener implements Observer {
 
 public String lastMessage;
+public String lastInternalLog;
 
     public DDPMeteorListener(){
 	lastMessage = "";
@@ -42,12 +43,17 @@ public String lastMessage;
 	return lastMessage;
     }
 
+    public String getLastInternalLog(){
+	return lastInternalLog;
+    }
+
     /**
      * Callback for method call with all result fields
      * @param resultFields returned results from method call
      */
     public void onResult(Map<String, Object> resultFields) {
 	lastMessage=resultFields.toString();
+	lastInternalLog="onResult";
 }
     
     /**
@@ -55,6 +61,7 @@ public String lastMessage;
      * @param callId method call ID
      */
     public void onUpdated(String callId) {
+	lastInternalLog = "Updated :"+callId;
 }
     
     /**
@@ -62,6 +69,7 @@ public String lastMessage;
      * @param callId method call ID
      */
     public void onReady(String callId) {
+	lastInternalLog = "Ready : "+callId;
 }
     
     /**
@@ -69,12 +77,16 @@ public String lastMessage;
      * @param callId method call ID
      * @param errorFields fields holding error info
      */
-    public void onNoSub(String callId, Map<String, Object> errorFields) {}
+    public void onNoSub(String callId, Map<String, Object> errorFields) {
+	lastMessage = errorFields.toString();
+	lastInternalLog = "NoSub : "+callId;
+}
     
     /**
      * Callback for receiving a Pong back from the server
      * @param pingId ping ID (mandatory)
      */
     public void onPong(String pingId) {
+	lastInternalLog = "Pong : "+pingId;
 }
 }

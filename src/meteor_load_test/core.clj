@@ -48,8 +48,6 @@
         (log "grinder.calls: " calls-raw)
         (log "host: " (.getHost targetUrl) ", port: " (get-port targetUrl)))
 
-      ;(let [ddpmeteorlistener (DDPMeteorListener. )])
-      ;(let [ddpmeteorlistener ("smooth")])
       (log "ddpmeteorlistener: " ddpmeteorlistener)
       (let [ddp (DDPClient. (.getHost targetUrl) 
                             (get-port targetUrl) 
@@ -93,10 +91,10 @@
                   resume-token (rand-nth tokens)]
               (when debug?
                 (log "logging in with resume token " resume-token))
-              (call-method ddp "login" [{"resume" resume-token}])))
+              (call-method ddp ddpmeteorlistener "login" [{"resume" resume-token}])))
 
         ;; initiate subscriptions
-        (perform-subscriptions ddp client-id subscriptions)
+        (perform-subscriptions ddp ddpmeteorlistener client-id subscriptions)
 
         ;; return function that will be executed for each test run
         (let [sleep #(sleep-fn call-delay-ms)]

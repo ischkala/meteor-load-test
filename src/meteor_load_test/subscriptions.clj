@@ -11,21 +11,24 @@
 (defn subscribe 
   "Subscribes to a Meteor collection. Converts args to 
    an Object[] before passing to DDP client"
-  ([ddp client-id collection-name]
+  ([ddp ddpmeteorlistener client-id collection-name]
     (log client-id " subscribing to: " collection-name)
-    (.subscribe ddp collection-name (object-array [])))
-  ([ddp client-id collection-name v]
-    (log client-id " subscribing to: " collection-name v)
-    (.subscribe ddp collection-name (object-array v))))
+    (.subscribe ddp collection-name (object-array []) ddpmeteorlistener)
+    (log "last message: " (. ddpmeteorlistener (getLastMessage))) )
 
+  ([ddp ddpmeteorlistener client-id collection-name v]
+    (log client-id " subscribing to: " collection-name v)
+    (.subscribe ddp collection-name (object-array v) ddpmeteorlistener)
+    (log "last message: " (. ddpmeteorlistener (getLastMessage))) ) )
+;) )
 (defn perform-subscriptions
   "Subscribes to collections specified in s. Elements of s
    should be of the form:
      * string - collection name with no parameters
      * map - solleciton name with parameters of form 
              'method-name':[arg1, arg2, etc.]"
-  [ddp client-id s]
-  (let [do-action (partial subscribe ddp client-id)]
+  [ddp ddpmeteorlistener client-id s]
+  (let [do-action (partial subscribe ddp ddpmeteorlistener client-id)]
     (log "perform-subscriptions")
     (perform-ddp-action nil invalid-subscription-msg do-action s)))
 
