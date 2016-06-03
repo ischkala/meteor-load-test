@@ -6,6 +6,7 @@
                           :url "http://www.eclipse.org/legal/epl-v10.html"}
     :dependencies [[org.clojure/clojure "1.4.0"]
                    [org.clojure/data.json "0.2.2"]
+		  [clj-time/clj-time "0.11.0"]
                    [com.google.code.gson/gson "2.2.2"]
                    [com.keysolutions/java-ddp-client "0.5.7.5"
                     :exclusions [org.java-websocket/Java-WebSocket]]
@@ -14,6 +15,7 @@
                 {:dependencies
                  [[clj-http "0.2.7"]
                   [clj-stacktrace "0.2.4"]
+                  [org.clojars.runa/conjure "2.1.3"]
                   [org.clojars.runa/conjure "2.1.3"]
                   [net.sf.grinder/grinder "3.11"]] }}
     :repositories {"sonatype" "https://oss.sonatype.org/content/repositories/releases/"}
@@ -30,12 +32,15 @@
                  [org.clojure/data.json "0.2.2"]
                  [com.google.code.gson/gson "2.2.2"]
                  [com.keysolutions/java-ddp-client "0.5.7.5"]
+		  [clj-time/clj-time "0.11.0"]
+                  [org.clojars.runa/conjure "2.1.3"]
                 ] 
   :profiles {:dev
              {:dependencies 
               [[clj-http "0.2.7"]
                [clj-stacktrace "0.2.4"]
                [org.clojars.runa/conjure "2.1.3"]
+                  [org.clojars.runa/conjure "2.1.3"]
                [net.sf.grinder/grinder "3.11"]] }}
   :repositories {"sonatype" "https://oss.sonatype.org/content/repositories/releases/"}
   ))

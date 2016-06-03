@@ -21,6 +21,8 @@ import com.keysolutions.ddpclient.DDPListener;
 import java.util.Map;
 import java.util.Observer;
 import java.util.Observable;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
  * Listener for method errors/results/updates
@@ -29,6 +31,7 @@ import java.util.Observable;
 public class DDPMeteorListener extends DDPListener implements Observer {
 
 public String lastMessage;
+public String timestampOfLastMessage;
 public String lastInternalLog;
 
     public DDPMeteorListener(){
@@ -47,12 +50,17 @@ public String lastInternalLog;
 	return lastInternalLog;
     }
 
+    public String getTimestampOfLastMessage(){
+	return timestampOfLastMessage;
+    }
+
     /**
      * Callback for method call with all result fields
      * @param resultFields returned results from method call
      */
     public void onResult(Map<String, Object> resultFields) {
 	lastMessage=resultFields.toString();
+	timestampOfLastMessage = new SimpleDateFormat("MM/dd HH:mm:ss").format(new Date());
 	lastInternalLog="onResult";
 }
     
