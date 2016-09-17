@@ -14,12 +14,17 @@
   ([ddp ddpmeteorlistener client-id collection-name]
     (log client-id " subscribing to: " collection-name)
     (.subscribe ddp collection-name (object-array []) ddpmeteorlistener)
-    (log "last message: " (. ddpmeteorlistener (getLastMessage))) )
+    (log "last message: " (. ddpmeteorlistener (getLastMessage))) 
+    ;(Thread/sleep 1000)
+    (log "last internal log: " (. ddpmeteorlistener (getLastInternalLog))) )
 
   ([ddp ddpmeteorlistener client-id collection-name v]
     (log client-id " subscribing to: " collection-name v)
     (.subscribe ddp collection-name (object-array v) ddpmeteorlistener)
-    (log "last message: " (. ddpmeteorlistener (getLastMessage))) ) )
+    (log "last message: " (. ddpmeteorlistener (getLastMessage)))
+    (Thread/sleep 1000)
+    (log "last internal log: " (. ddpmeteorlistener (getLastInternalLog)))  ) )
+
 ;) )
 (defn perform-subscriptions
   "Subscribes to collections specified in s. Elements of s

@@ -33,6 +33,7 @@ public class DDPMeteorListener extends DDPListener implements Observer {
 public String lastMessage;
 public String timestampOfLastMessage;
 public String lastInternalLog;
+public String lastUpdate;
 
     public DDPMeteorListener(){
 	lastMessage = "";
@@ -40,10 +41,16 @@ public String lastInternalLog;
 
 
     public void update(Observable client, Object msg){
+        lastUpdate = msg.toString();
+        lastInternalLog = "client: "+client.toString()+" msg:"+msg.toString();
     }
 
     public String getLastMessage(){
 	return lastMessage;
+    }
+
+    public String getLastUpdate(){
+        return lastUpdate;
     }
 
     public String getLastInternalLog(){
@@ -61,7 +68,7 @@ public String lastInternalLog;
     public void onResult(Map<String, Object> resultFields) {
 	lastMessage=resultFields.toString();
 	timestampOfLastMessage = new SimpleDateFormat("MM/dd HH:mm:ss").format(new Date());
-	lastInternalLog="onResult";
+	lastInternalLog=lastInternalLog+"onResult";
 }
     
     /**
@@ -69,7 +76,7 @@ public String lastInternalLog;
      * @param callId method call ID
      */
     public void onUpdated(String callId) {
-	lastInternalLog = "Updated :"+callId;
+	lastInternalLog = lastInternalLog+ "Updated :"+callId;
 }
     
     /**
@@ -77,7 +84,9 @@ public String lastInternalLog;
      * @param callId method call ID
      */
     public void onReady(String callId) {
-	lastInternalLog = "Ready : "+callId;
+        String timestamp = new SimpleDateFormat("MM/dd HH:mm:ss").format(new Date());
+
+	lastInternalLog = lastInternalLog+ "Ready : "+callId+" : "+timestamp+" | ";
 }
     
     /**
@@ -87,7 +96,7 @@ public String lastInternalLog;
      */
     public void onNoSub(String callId, Map<String, Object> errorFields) {
 	lastMessage = errorFields.toString();
-	lastInternalLog = "NoSub : "+callId;
+	lastInternalLog = lastInternalLog+"NoSub : "+callId;
 }
     
     /**
@@ -95,6 +104,6 @@ public String lastInternalLog;
      * @param pingId ping ID (mandatory)
      */
     public void onPong(String pingId) {
-	lastInternalLog = "Pong : "+pingId;
+	lastInternalLog = lastInternalLog+"Pong : "+pingId;
 }
 }

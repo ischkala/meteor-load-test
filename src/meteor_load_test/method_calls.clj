@@ -16,6 +16,7 @@
 		(log (apply str ["--FAILURE--" lastMessage]) )
 		(log (apply str ["--SUCCESS--" lastMessage]) )
 	)
+        (log "Last internal log: " (. ddpmeteorlistener (getLastInternalLog)))
       )
       (let [timestampOfLastMessage (. ddpmeteorlistener (getTimestampOfLastMessage))]
 		(log "Timestamp of Last Message: " timestampOfLastMessage)

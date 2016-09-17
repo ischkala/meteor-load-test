@@ -9,6 +9,7 @@
   )
 
 (declare test-runner-factory)
+(declare test-runner-factory-sub)
 (def ddp-connected
   com.keysolutions.ddpclient.DDPClient$CONNSTATE/Connected)
 
@@ -96,14 +97,54 @@
         ;; initiate subscriptions
         (perform-subscriptions ddp ddpmeteorlistener client-id subscriptions)
 
+        ;(while true
+        ;  (Thread/sleep 1000)
+        ;  (log "Last update: " (. ddpmeteorlistener (getLastUpdate)))
+        ;  (log "Last internal log: " (. ddpmeteorlistener (getLastInternalLog)))
+        ;  (log "Last message: " (. ddpmeteorlistener (getLastMessage)))
+        ;)
         ;; return function that will be executed for each test run
         (let [sleep #(sleep-fn call-delay-ms)]
-          (test-runner-factory sleep client-id get-run-id (partial call-method ddp ddpmeteorlistener) calls-raw))
+          ;(test-runner-factory sleep client-id get-run-id (partial call-method ddp ddpmeteorlistener) calls-raw))
+          (test-runner-factory-sub sleep ddp ddpmeteorlistener client-id get-run-id subscriptions ))
+        
         
       )  ; let ddp-client, id
     )  ; returned fn
   )  ; let
 )  ; worker-thread
+
+
+(defn test-runner-factory-sub
+  "Returns an anonymous function which is run by each worker thread."
+  [sleep ddp ddpmeteorlistener client-id get-run-id subscriptions]
+  (fn []
+
+    (comment
+      (log "test run: " (str client-id "-" (get-run-id))))
+
+    (if (empty? subscriptions )
+      (log "No subscriptions to perform")
+      (let [run-id (get-run-id)
+            entry-name (str "load-" run-id)
+            keywords (make-keywords client-id run-id)
+                    ]
+
+        (comment
+          (log "run-id " run-id)
+          (log "subscriptions " subscriptions))
+
+        (perform-subscriptions ddp ddpmeteorlistener client-id subscriptions)
+        (Thread/sleep 60000)
+        ;(perform-calls sleep call-method-fn calls)
+        ;(log "Last update: " (. ddpmeteorlistener (getLastUpdate)))
+        ;(log "Last internal log: " (. ddpmeteorlistener (getLastInternalLog))) ;(log "Last message: " (. ddpmeteorlistener (getLastMessage)))
+
+
+        ))  ; non-empty calls
+
+    )  ; returned anonymous fn
+  )  ; test-runner-factory  
 
 
 (defn test-runner-factory
@@ -130,6 +171,10 @@
           (log "calls " calls))
 
         (perform-calls sleep call-method-fn calls)
+        ;(log "Last update: " (. ddpmeteorlistener (getLastUpdate)))
+        ;(log "Last internal log: " (. ddpmeteorlistener (getLastInternalLog)))
+        ;(log "Last message: " (. ddpmeteorlistener (getLastMessage)))
+
 
         ))  ; non-empty calls
 
