@@ -135,7 +135,7 @@
           (log "subscriptions " subscriptions))
 
         (perform-subscriptions ddp ddpmeteorlistener client-id subscriptions)
-        (Thread/sleep 60000)
+        (Thread/sleep 1000)
         ;(perform-calls sleep call-method-fn calls)
         ;(log "Last update: " (. ddpmeteorlistener (getLastUpdate)))
         ;(log "Last internal log: " (. ddpmeteorlistener (getLastInternalLog))) ;(log "Last message: " (. ddpmeteorlistener (getLastMessage)))
