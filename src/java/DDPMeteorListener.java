@@ -68,7 +68,7 @@ public String lastUpdate;
     public void onResult(Map<String, Object> resultFields) {
 	lastMessage=resultFields.toString();
 	timestampOfLastMessage = new SimpleDateFormat("MM/dd HH:mm:ss").format(new Date());
-	lastInternalLog=lastInternalLog+"onResult";
+	lastInternalLog="onResult";
 }
     
     /**
@@ -86,7 +86,7 @@ public String lastUpdate;
     public void onReady(String callId) {
         String timestamp = new SimpleDateFormat("MM/dd HH:mm:ss").format(new Date());
 
-	lastInternalLog = lastInternalLog+ "Ready : "+callId+" : "+timestamp+" | ";
+	lastInternalLog ="Ready : "+callId+" : "+timestamp+" | ";
 }
     
     /**
@@ -96,7 +96,7 @@ public String lastUpdate;
      */
     public void onNoSub(String callId, Map<String, Object> errorFields) {
 	lastMessage = errorFields.toString();
-	lastInternalLog = lastInternalLog+"NoSub : "+callId;
+	lastInternalLog = "NoSub : "+callId;
 }
     
     /**
@@ -104,6 +104,6 @@ public String lastUpdate;
      * @param pingId ping ID (mandatory)
      */
     public void onPong(String pingId) {
-	lastInternalLog = lastInternalLog+"Pong : "+pingId;
+	lastInternalLog = "Pong : "+pingId;
 }
 }

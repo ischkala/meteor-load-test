@@ -105,8 +105,8 @@
         ;)
         ;; return function that will be executed for each test run
         (let [sleep #(sleep-fn call-delay-ms)]
-          ;(test-runner-factory sleep client-id get-run-id (partial call-method ddp ddpmeteorlistener) calls-raw))
-          (test-runner-factory-sub sleep ddp ddpmeteorlistener client-id get-run-id subscriptions ))
+          (test-runner-factory sleep client-id get-run-id (partial call-method ddp ddpmeteorlistener) calls-raw))
+          ;(test-runner-factory-sub sleep ddp ddpmeteorlistener client-id get-run-id subscriptions ))
         
         
       )  ; let ddp-client, id
