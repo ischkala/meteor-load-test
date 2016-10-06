@@ -105,8 +105,8 @@
         ;)
         ;; return function that will be executed for each test run
         (let [sleep #(sleep-fn call-delay-ms)]
-          (test-runner-factory sleep client-id get-run-id (partial call-method ddp ddpmeteorlistener) calls-raw))
-          ;(test-runner-factory-sub sleep ddp ddpmeteorlistener client-id get-run-id subscriptions ))
+          ;(test-runner-factory sleep client-id get-run-id (partial call-method ddp ddpmeteorlistener) calls-raw))
+          (test-runner-factory-sub sleep ddp ddpmeteorlistener client-id get-run-id subscriptions ))
         
         
       )  ; let ddp-client, id
@@ -135,7 +135,7 @@
           (log "subscriptions " subscriptions))
 
         (perform-subscriptions ddp ddpmeteorlistener client-id subscriptions)
-        (Thread/sleep 1000)
+        (Thread/sleep 60000)
         ;(perform-calls sleep call-method-fn calls)
         ;(log "Last update: " (. ddpmeteorlistener (getLastUpdate)))
         ;(log "Last internal log: " (. ddpmeteorlistener (getLastInternalLog))) ;(log "Last message: " (. ddpmeteorlistener (getLastMessage)))
